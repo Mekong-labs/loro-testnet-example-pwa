@@ -88,7 +88,7 @@ record:
   version: 1.0.0
   name: "$rcd_name@$rcd_app_version"
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
-  dns: "$CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME"
+  dns: test.laconic.com
   deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
   config:
     env:
