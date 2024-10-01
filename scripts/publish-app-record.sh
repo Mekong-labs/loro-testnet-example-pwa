@@ -18,6 +18,8 @@ rcd_license=$(jq -r '.license' package.json | sed 's/null//')
 rcd_author=$(jq -r '.author' package.json | sed 's/null//')
 rcd_app_version=$(jq -r '.version' package.json | sed 's/null//')
 
+CERC_REGISTRY_DEPLOYMENT_REQUEST_PAYMENT_TO="laconic195s2w429xuxqagkz54n55dcpfz4nwl0k62qnet"
+
 cat <<EOF > "$CONFIG_FILE"
 services:
   registry:
@@ -28,11 +30,11 @@ services:
     fees: 15000000alnt
 EOF
 
-# if [ -z "$CERC_REGISTRY_BOND_ID" ]; then
-#   bond_id=$(laconic -c $CONFIG_FILE registry bond create --type alnt --quantity 10000000000 --user-key "${CERC_REGISTRY_USER_KEY}")
-
-  CERC_REGISTRY_BOND_ID=64847bde29772105196a51aecfd5f39f12a9c5d1b5fea223cae30973a6e5bf2e
-# fi
+#if [ -z "$CERC_REGISTRY_BOND_ID" ]; then
+#  bond_id=$(laconic -c $CONFIG_FILE registry bond create --type alnt --quantity 10000000000 --user-key "${CERC_REGISTRY_USER_KEY}")
+#
+ CERC_REGISTRY_BOND_ID=64847bde29772105196a51aecfd5f39f12a9c5d1b5fea223cae30973a6e5bf2e
+#fi
 
 next_ver=$(laconic -c $CONFIG_FILE registry record list --type ApplicationRecord --all --name "$rcd_name" 2>/dev/null | jq -r -s ".[] | sort_by(.createTime) | reverse | [ .[] | select(.bondId == \"$CERC_REGISTRY_BOND_ID\") ] | .[0].attributes.version" | awk -F. -v OFS=. '{$NF += 1 ; print}')
 
@@ -65,7 +67,7 @@ if [ -z "$CERC_REGISTRY_APP_CRN" ]; then
   authority=$(echo "$rcd_name" | cut -d'/' -f1 | sed 's/@//')
   app=$(echo "$rcd_name" | cut -d'/' -f2-)
   CERC_REGISTRY_APP_CRN="lrn://$authority/applications/$app"
-  # laconic -c $CONFIG_FILE registry authority reserve ${authority} --user-key "${CERC_REGISTRY_USER_KEY}"
+ # laconic -c $CONFIG_FILE registry authority reserve ${authority} --user-key "${CERC_REGISTRY_USER_KEY}"
   laconic -c $CONFIG_FILE registry authority bond set ${authority} ${CERC_REGISTRY_BOND_ID} --user-key "${CERC_REGISTRY_USER_KEY}"
 fi
 
@@ -75,6 +77,12 @@ if [ "true" == "$CERC_IS_LATEST_RELEASE" ]; then
   laconic -c $CONFIG_FILE registry name set --user-key "${CERC_REGISTRY_USER_KEY}" --bond-id ${CERC_REGISTRY_BOND_ID} "$CERC_REGISTRY_APP_CRN" "$AR_RECORD_ID"
 fi
 
+#PAYMENT_TX=$(laconic -c $CONFIG_FILE registry tokens send \
+#  --address $CERC_REGISTRY_DEPLOYMENT_REQUEST_PAYMENT_TO \
+#  --user-key "${CERC_REGISTRY_DEPLOYMENT_REQUEST_USER_KEY}" \
+#  --bond-id "${CERC_REGISTRY_DEPLOYMENT_REQUEST_BOND_ID}" \
+#  --type alnt \
+#  --quantity ${CERC_REGISTRY_DEPLOYMENT_REQUEST_PAYMENT_AMOUNT:-10000} | jq '.tx.hash')
 
 APP_RECORD=$(laconic -c $CONFIG_FILE registry name resolve "$CERC_REGISTRY_APP_CRN" | jq '.[0]')
 if [ -z "$APP_RECORD" ] || [ "null" == "$APP_RECORD" ]; then
@@ -88,12 +96,13 @@ record:
   version: 1.0.0
   name: "$rcd_name@$rcd_app_version"
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
-  deployment: "lrn://Mekong-labs/deployers/webapp-deployer-api.mekonglabs.xyz"
+  dns: "$CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME"
+  deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
+  to: $CERC_REGISTRY_DEPLOYMENT_REQUEST_PAYMENT_TO
+  payment: $PAYMENT_TX
   config:
     env:
       CERC_WEBAPP_DEBUG: "$rcd_app_version"
-  lrn:
-    - lrn://Mekong-labs/applications/$app
   meta:
     note: "Added by CI @ `date`"
     repository: "`git remote get-url origin`"
