@@ -33,7 +33,7 @@ EOF
 if [ -z "$CERC_REGISTRY_BOND_ID" ]; then
   echo "Create bond, running command laconic -c $CONFIG_FILE registry bond create --type alnt --quantity 100000000 --user-key $CERC_REGISTRY_USER_KEY"
   bond_id=$(laconic -c $CONFIG_FILE registry bond create --type alnt --quantity 100000000 --user-key "${CERC_REGISTRY_USER_KEY}")
-  CERC_REGISTRY_BOND_ID=$(echo ${bond_id} | jq -r .bondId)
+  CERC_REGISTRY_BOND_ID=64847bde29772105196a51aecfd5f39f12a9c5d1b5fea223cae30973a6e5bf2e
 fi
 
 next_ver=$(laconic -c $CONFIG_FILE registry record list --type ApplicationRecord --all --name "$rcd_name" 2>/dev/null | jq -r -s ".[] | sort_by(.createTime) | reverse | [ .[] | select(.bondId == \"$CERC_REGISTRY_BOND_ID\") ] | .[0].attributes.version" | awk -F. -v OFS=. '{$NF += 1 ; print}')
