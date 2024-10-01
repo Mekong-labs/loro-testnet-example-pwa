@@ -111,8 +111,9 @@ record:
   version: 1.0.0
   name: "$rcd_name@$rcd_app_version"
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
-  dns: "lorotestapp.pwa.mekonglabs.xyz"
+  dns: "$app.pwa.mekonglabs.xyz"
   deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
+  deployer: "lrn://mekonglabs/deployers/webapp-deployer-api.mekonglabs.xyz"
   to: $CERC_REGISTRY_DEPLOYMENT_PAYMENT_TO
   payment: $PAYMENT_TX
   config:
