@@ -92,6 +92,8 @@ record:
   config:
     env:
       CERC_WEBAPP_DEBUG: "$rcd_app_version"
+  lrn:
+    - lrn://Mekong-labs/applications/$app
   meta:
     note: "Added by CI @ `date`"
     repository: "`git remote get-url origin`"
