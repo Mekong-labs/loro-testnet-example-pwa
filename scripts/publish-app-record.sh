@@ -88,7 +88,7 @@ record:
   version: 1.0.0
   name: "$rcd_name@$rcd_app_version"
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
-  dns: test.laconic.com
+  dns: pwa.mekonglabs.xyz
   deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
   config:
     env:
