@@ -88,8 +88,7 @@ record:
   version: 1.0.0
   name: "$rcd_name@$rcd_app_version"
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
-  dns: pwa.mekonglabs.xyz
-  deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
+  deployment: "lrn://Mekong-labs/deployers/webapp-deployer-api.mekonglabs.xyz"
   config:
     env:
       CERC_WEBAPP_DEBUG: "$rcd_app_version"
