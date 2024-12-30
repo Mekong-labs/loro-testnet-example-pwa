@@ -23,9 +23,9 @@ CERC_REGISTRY_DEPLOYMENT_PAYMENT_AMOUNT=${CERC_REGISTRY_DEPLOYMENT_PAYMENT_AMOUN
 cat <<EOF > "$CONFIG_FILE"
 services:
   registry:
-    rpcEndpoint: 'https://laconicd.laconic.com'
-    gqlEndpoint: 'https://laconicd.laconic.com/api'
-    chainId: laconic_9000-1
+    rpcEndpoint: 'http://135.181.139.249:36657'
+    gqlEndpoint: 'http://135.181.139.249:9473/api'
+    chainId: laconic-testnet-2
     gas: 9550000
     fees: 15000000alnt
 EOF
@@ -113,7 +113,7 @@ record:
   application: "$CERC_REGISTRY_APP_CRN@$rcd_app_version"
   dns: "$app.pwa.mekonglabs.xyz"
   deployment: "$CERC_REGISTRY_DEPLOYMENT_CRN"
-  deployer: "lrn://Mekong-labs/deployers/webapp-deployer-api.mekonglabs.xyz"
+  deployer: "lrn://mekonglabs/deployers/webapp-deployer-api.mekonglabs.xyz"
   to: $CERC_REGISTRY_DEPLOYMENT_PAYMENT_TO
   payment: $PAYMENT_TX
   config:
