@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@Mekong-labs/mekonglabs-pwa-test-4",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "repository": "https://github.com/Mekong-labs/loro-testnet-example-pwa.git",
   "scripts": {
     "dev": "next dev",
