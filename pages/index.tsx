@@ -5,7 +5,7 @@ export default function Home() {
     <div className={styles.container}>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Hello from <a href="https://www.laconic.com/">Laconic!</a>
+          Hello from <a href="https://mekonglabs.tech/">MekongLabs!</a>
         </h1>
 
         <div className={styles.grid}>
